@@ -1,0 +1,25 @@
+{
+  "name": "loginapp",
+  "version": "1.0.0",
+  "description": "Simple authentication system",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brad Traversy",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cookie-parser": "^1.4.1",
+    "express": "*",
+    "express-session": "*",
+    "jsonwebtoken": "^7.4.1",
+    "method-override": "^2.3.9",
+    "mongodb": "*",
+    "mongoose": "*",
+    "morgan": "^1.8.2",
+    "consign": "*"
+  }
+}
