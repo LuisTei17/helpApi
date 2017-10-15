@@ -12,14 +12,15 @@
   "dependencies": {
     "bcryptjs": "*",
     "body-parser": "*",
+    "consign": "*",
     "cookie-parser": "^1.4.1",
+    "cors": "^2.8.4",
     "express": "*",
     "express-session": "*",
     "jsonwebtoken": "^7.4.1",
     "method-override": "^2.3.9",
     "mongodb": "*",
     "mongoose": "*",
-    "morgan": "^1.8.2",
-    "consign": "*"
+    "morgan": "^1.8.2"
   }
 }

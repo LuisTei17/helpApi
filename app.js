@@ -1,5 +1,4 @@
 // Importando todas as libs que vamos precisar para a construção da api
-
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -10,6 +9,7 @@ var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
 var morgan = require('morgan');
 var consign = require('consign');
+var cors = require('cors');
 
 // Conectando ao banco de dados externo
 mongoose.connect('mongodb://luis:luis@cluster0-shard-00-00-ntvbt.mongodb.net:27017,cluster0-shard-00-01-ntvbt.mongodb.net:27017,cluster0-shard-00-02-ntvbt.mongodb.net:27017/help?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin')
@@ -20,6 +20,9 @@ var app = express();
 
 // Dizendo onde está a aplicação cliente
 app.set('clientPath', path.join(__dirname, '..', 'client'));
+
+// Permitindo cors
+app.use(cors())
 
 // BodyParser Middleware
 app.use(bodyParser.json());
