@@ -17,7 +17,7 @@ module.exports = function(app){
    */
   controller.login = function(req, res){
     var tipo = req.body.tipo;
-
+    console.log(req);
     // Verifica qual o tipo de User para 
     // buscar no banco
     if(tipo === "empresa") {
@@ -63,7 +63,7 @@ module.exports = function(app){
    * com token válido ou não
    */
   controller.validaUsuario = 	function(req, res){
-    var token = req.body.token || req.session.token;
+    var token = req.body.token || req.session.token || req.params.token;
     
 		if (token) {
 			jwt.verify(token, app.get('superSecret'), function(err, decoded) {
