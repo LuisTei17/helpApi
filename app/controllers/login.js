@@ -63,7 +63,7 @@ module.exports = function(app){
    * com token válido ou não
    */
   controller.validaUsuario = 	function(req, res){
-    var token = req.body.token || req.session.token || req.params.token;
+    var token = req.body.token || req.session.token;
     
 		if (token) {
 			jwt.verify(token, app.get('superSecret'), function(err, decoded) {
