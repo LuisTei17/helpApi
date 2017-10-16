@@ -63,12 +63,13 @@ module.exports = function(app){
    * com token válido ou não
    */
   controller.validaUsuario = 	function(req, res){
-    var token = req.body.token || req.session.token;
+    var token = req.body.token || req.session.token || req.params.token || req.query.token;
     
 		if (token) {
 			jwt.verify(token, app.get('superSecret'), function(err, decoded) {
 				if (err) {
-					return res.status(404).json({"msg": 'Erro ao validar token'});
+          return res.status(404).json({"msg": 'Erro ao validar token'});
+          
 				} else {
 					req.user = decoded._doc;
 					res.status(200).json(req.user);
