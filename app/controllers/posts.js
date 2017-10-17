@@ -64,7 +64,7 @@ module.exports = function(app) {
         var data = req.body.data;
         var categoria = req.body.categoriaInst;
         var _id = req.body._id;
-   
+        
         if(_id) {
             Post.findByIdAndUpdate(_id, req.body).exec().then(function(post) {
                 res.status(200).json(post);

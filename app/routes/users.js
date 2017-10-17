@@ -28,11 +28,6 @@ module.exports = function(app){
 
 	app.route('/v1/autentica').post(controller.validaUsuario);
 
-	// Caso o usuário entre uma url que não seja nossa
-	// será redirecionado para o cli
-	app.all('/*', function(req, res) {
-        res.sendFile(path.join(app.get('clientPath'), 'index.html'));
-    });
 	
 
 }

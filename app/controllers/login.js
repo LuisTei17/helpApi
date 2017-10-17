@@ -7,7 +7,6 @@ module.exports = function(app){
 
   // Definindo array de controllers
   var controller = {};
-  var funcoes = app.controllers.funcoesGlobais;
   var Usuario = app.models.users;
   var Empresa = app.models.empresas;
   var Instituicao = app.models.instituicoes;
@@ -17,7 +16,7 @@ module.exports = function(app){
    */
   controller.login = function(req, res){
     var tipo = req.body.tipo;
-    console.log(req);
+  
     // Verifica qual o tipo de User para 
     // buscar no banco
     if(tipo === "empresa") {
@@ -34,37 +33,36 @@ module.exports = function(app){
         username: req.body.username
         },function(err, user){
           if(!user) {
-            res.mensagem = 'Usuario não encontrado';
-            res.status(404).json({"msg": res.mensagem});
-        } else if(user) {       
-            if(funcoes.compara(res, passLogin, user.password)) {
-              res.menssagem = 'Senha errada'
-              return res.status(404).json({"msg": res.mensagem});
-            }
-            else {
-              // Criando token jwt e salvando-o na sessão
-              var token = jwt.sign(user, app.get('superSecret'), {
-                expiresIn: 60*8*60
-              });
-              req.session.token = token;
-              req.session.save();
-              return res.status(200).json({token});
+            return res.status(404).json({"msg": "Usuario não encontrado"});
+          } 
+          else if(user) {
+            bcrypt.compare(passLogin, user.password, function(err, senhaCorreta) {
+              if(senhaCorreta) {
+                var token = jwt.sign(user, app.get('superSecret'), {
+                  expiresIn: 60*8*60
+                });
+                req.session.token = token;
+                req.session.save();
+                return res.status(200).json({token});
+              }
               
-            }
-        }
-      });
-    }
-    else {
-      res.json({err: "Not found"})
+              return res.status(500).json({"msg":"Senha errada"});
+              // Criando token jwt e salvando-o na sessão
+                
+            })
+          }
+        else {
+          res.json({err: "Not found"})
+        } 
+      })
     }
   }
   /**
    * Controller que visa validar se o usuário
    * com token válido ou não
    */
-  controller.validaUsuario = 	function(req, res){
+  controller.validaUsuario = 	function(req, res, next){
     var token = req.body.token || req.session.token || req.params.token || req.query.token;
-    
 		if (token) {
 			jwt.verify(token, app.get('superSecret'), function(err, decoded) {
 				if (err) {
@@ -72,11 +70,11 @@ module.exports = function(app){
           
 				} else {
 					req.user = decoded._doc;
-					res.status(200).json(req.user);
+				  return true;
 				}
 			});
 		} else {
-			res.status(404).json({"msg": 'Erro: nenhum token enviado  '});
+			return res.status(404).json({"msg": 'Erro: nenhum token enviado  '});
 		}
 	}
   return controller;
