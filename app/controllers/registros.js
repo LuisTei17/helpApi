@@ -22,7 +22,15 @@ module.exports = function(app){
     var password2 = req.body.password2;
     var categorias = req.body.categorias;
 
-    if(!nome || !email || !username || !password || !password2 || !categorias ) {
+    nomeExiste = typeof nome != undefined;
+    emailExiste = typeof email != undefined;
+    usernameExiste = typeof username != undefined;
+    passwordExiste = typeof password != undefined;
+    password2Existe = typeof nome != undefined;
+    categoriasExiste = typeof categorias != undefined;
+
+    if(!nomeExiste || !emailExiste || !usernameExiste || !passwordExiste || !password2Existe || !categoriasExiste ) {
+      console.log("adda")
       return res.status(500).json({msg: "Erro, campo(s) vazio"})
     }
 
