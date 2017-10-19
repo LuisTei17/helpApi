@@ -22,6 +22,10 @@ module.exports = function(app){
     var password2 = req.body.password2;
     var categorias = req.body.categorias;
 
+    if(!nome || !email || !username || !password || !password2 || !categorias ) {
+      return res.status(500).json({msg: "Erro, campo(s) vazio"})
+    }
+
     bcrypt.genSalt(saltRounds, function(err, salt) {
       bcrypt.hash(password, salt, function(err, hash) {
         // Store hash in your password DB.
