@@ -30,8 +30,10 @@ module.exports = function(app){
     categoriasExiste = typeof categorias != undefined;
 
     if(!nomeExiste || !emailExiste || !usernameExiste || !passwordExiste || !password2Existe || !categoriasExiste ) {
-      console.log("adda")
-      return res.status(500).json({msg: "Erro, campo(s) vazio"})
+      return res.status(500).json({msg: "Erro, campo(s) vazio"});
+    }
+    if(passwrd != password2) {
+      return res.status(500).json({msg: "Erro, senhas não coincidem"});
     }
 
     bcrypt.genSalt(saltRounds, function(err, salt) {

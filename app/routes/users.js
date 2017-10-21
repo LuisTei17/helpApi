@@ -13,6 +13,9 @@ module.exports = function(app){
 	// Aplica middlware apiRoutes a todas as rotas com "/in" antes
 	app.use('/v1/in/*', apiRoutes);
 
+	app.get('/v1/categorias', controller.retornaCategorias);
+	app.get('/v1/usuarios', controller.retornaTiposUsuarios)
+
 	// Operações de registro
 	app.route('/v1/registroUsuario').post(controllerRegistro.registroUsuario);
 	app.route('/v1/registroEmpresa').post(controllerRegistro.registroEmpresa);

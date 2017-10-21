@@ -7,6 +7,8 @@ module.exports = function(app){
 
   // Definindo array de controllers
   var controller = {};
+  var TipoUsuario = app.models.tiposUsuarios;
+  var Categorias = app.models.categorias;
   var Usuario = app.models.users;
   var Empresa = app.models.empresas;
   var Instituicao = app.models.instituicoes;
@@ -57,8 +59,35 @@ module.exports = function(app){
       })
     }
   }
+
   /**
-   * Controller que visa validar se o usuário
+   * Controller que retorna as categorias
+   */
+  controller.retornaCategorias = function(req, res) {
+    Categorias.find({}, function(err, docs) {
+      if(!err) {
+        res.status(200).json(docs);
+      } else {
+        throw err;
+      }
+    });
+  }
+
+  /**
+   * Controller que retorna os tipos de usuários
+   */
+  controller.retornaTiposUsuarios = function(req, res) {
+    TipoUsuario.find({}, function(err, docs) {
+      if(!err) {
+        res.status(200).json(docs);
+      } else {
+        throw err;
+      }
+    });
+  }
+
+  /**
+   * Controller que valida se o usuário
    * com token válido ou não
    */
   controller.validaUsuario = 	function(req, res, next){
