@@ -66,7 +66,8 @@ module.exports = function(app){
   controller.retornaCategorias = function(req, res) {
     Categorias.find({}, function(err, docs) {
       if(!err) {
-        res.status(200).json(docs);
+        console.log(docs)
+        return res.status(200).json(docs);
       } else {
         throw err;
       }
@@ -99,7 +100,7 @@ module.exports = function(app){
           
 				} else {
 					req.user = decoded._doc;
-				  return true;
+				  next();
 				}
 			});
 		} else {

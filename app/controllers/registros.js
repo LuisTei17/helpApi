@@ -32,10 +32,10 @@ module.exports = function(app){
     if(!nomeExiste || !emailExiste || !usernameExiste || !passwordExiste || !password2Existe || !categoriasExiste ) {
       return res.status(500).json({msg: "Erro, campo(s) vazio"});
     }
-    if(passwrd != password2) {
+    if(password != password2) {
       return res.status(500).json({msg: "Erro, senhas não coincidem"});
     }
-
+    
     bcrypt.genSalt(saltRounds, function(err, salt) {
       bcrypt.hash(password, salt, function(err, hash) {
         // Store hash in your password DB.
@@ -65,9 +65,25 @@ module.exports = function(app){
     var password = req.body.password;
     var password2 = req.body.password2;
     var categorias = req.body.categorias;
+
+    nomeExiste = typeof nome != undefined;
+    cnpjExiste = typeof cnpj != undefined;
+    emailExiste = typeof email != undefined;
+    usernameExiste = typeof username != undefined;
+    passwordExiste = typeof password != undefined;
+    password2Existe = typeof nome != undefined;
+    categoriasExiste = typeof categorias != undefined;
+
+    if(!nomeExiste || !emailExiste || !usernameExiste || !passwordExiste || !password2Existe || !categoriasExiste || !cnpjExiste ) {
+      return res.status(500).json({msg: "Erro, campo(s) vazio"});
+    }
+    if(password != password2) {
+      return res.status(500).json({msg: "Erro, senhas não coincidem"});
+    }
+
     bcrypt.genSalt(saltRounds, function(err, salt) {
-      bcrypt.hash(myPlaintextPassword, salt, function(err, hash) {
-        var passwordHash = funcoes.hashGen(password);
+      bcrypt.hash(password, salt, function(err, hash) {
+        var passwordHash = hash;
         var newEmpresa = new Empresa({
           cnpj: cnpj,
           nome: nome,
@@ -96,22 +112,41 @@ module.exports = function(app){
     var password2 = req.body.password2;
     var categorias = req.body.categorias;
 
-    var passwordHash = funcoes.hashGen(password);
-    var newInst = new Instituicao({
-      cnpj: cnpj,
-      nome: nome,
-      email:email,
-      username: username,
-      password: passwordHash,
-      categorias: categorias
-    });
-    newInst.save(function(err){
-      if(err) {
-        res.status(500).json({"msg": "Erro ao salvar"});
-      } else {
-        res.status(200).json({"msg": "Salvo"});
-      }
-    });
-  };
+    nomeExiste = typeof nome != undefined;
+    cnpjExiste = typeof cnpj != undefined;
+    emailExiste = typeof email != undefined;
+    usernameExiste = typeof username != undefined;
+    passwordExiste = typeof password != undefined;
+    password2Existe = typeof nome != undefined;
+    categoriasExiste = typeof categorias != undefined;
+
+    if(!nomeExiste || !emailExiste || !usernameExiste || !passwordExiste || !password2Existe || !categoriasExiste || !cnpjExiste ) {
+      return res.status(500).json({msg: "Erro, campo(s) vazio"});
+    }
+    if(password != password2) {
+      return res.status(500).json({msg: "Erro, senhas não coincidem"});
+    }
+
+    bcrypt.genSalt(saltRounds, function(err, salt) {
+      bcrypt.hash(password, salt, function(err, hash) {
+        var passwordHash = hash;
+        var newInst = new Instituicao({
+          cnpj: cnpj,
+          nome: nome,
+          email:email,
+          username: username,
+          password: passwordHash,
+          categorias: categorias
+        });
+        newInst.save(function(err){
+          if(err) {
+            res.status(500).json({"msg": "Erro ao salvar"});
+          } else {
+            res.status(200).json({"msg": "Salvo"});
+          }
+        });
+      });
+    })
+  }
   return controller;
 }
