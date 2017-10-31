@@ -37,7 +37,6 @@ app.use(session({secret: 'mySecret', resave: true, saveUninitialized: true, expi
 // Variável secreta para 
 app.set('superSecret', 'ilove');
 
-
 // Recebemos logs mais detalhados
 app.use(morgan('dev'));
 

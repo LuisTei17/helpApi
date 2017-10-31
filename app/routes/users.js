@@ -6,12 +6,10 @@ module.exports = function(app){
 	var controller = app.controllers.login;
 	var controllerRegistro = app.controllers.registros;
 
-	var apiRoutes = express.Router();
 
-	// Middlware que controla autenticação do usuário com JWT
-	apiRoutes.use(controller.validaUsuario);
+
 	// Aplica middlware apiRoutes a todas as rotas com "/in" antes
-	app.use('/v1/in/*', apiRoutes);
+	app.use('/v1/in/*', controller.validaUsuario);
 
 	app.get('/v1/categorias', controller.retornaCategorias);
 	app.get('/v1/usuarios', controller.retornaTiposUsuarios)
@@ -24,12 +22,13 @@ module.exports = function(app){
 	app.route('/v1/login').post(controller.login);
 
 	app.route(`/v1/in/profile`).post(controller.validaUsuario);
-	app.post('/v1/in/logout', function(req, res){
+	app.get('/v1/in/logout', function(req, res){
+		console.log("logging out")
 		req.session.token =  null;
 		res.status(200).json({"msg": "Deslogado"});
 	});
 
-	app.route('/v1/autentica').post(controller.validaUsuario);
+	app.route('/v1/autentica').get(controller.autenticaUsuario);
 
 	
 

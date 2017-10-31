@@ -1,13 +1,11 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
-var crypto = require('crypto');
 var bcrypt = require('bcryptjs')
 
 module.exports = function(app){
   
   // Constante que determina como será constituida a senha
   const saltRounds = 10;
-  var salvaResposta = app.response.respostaSalva;
   var User = app.models.users;
   var Empresa = app.models.empresas;
   var Instituicao = app.models.instituicoes;

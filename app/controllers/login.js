@@ -7,6 +7,7 @@ module.exports = function(app){
 
   // Definindo array de controllers
   var controller = {};
+  // Carrega models
   var TipoUsuario = app.models.tiposUsuarios;
   var Categorias = app.models.categorias;
   var Usuario = app.models.users;
@@ -18,7 +19,7 @@ module.exports = function(app){
    */
   controller.login = function(req, res){
     var tipo = req.body.tipo;
-  
+    
     // Verifica qual o tipo de User para 
     // buscar no banco
     if(tipo === "empresa") {
@@ -66,7 +67,6 @@ module.exports = function(app){
   controller.retornaCategorias = function(req, res) {
     Categorias.find({}, function(err, docs) {
       if(!err) {
-        console.log(docs)
         return res.status(200).json(docs);
       } else {
         throw err;
@@ -92,20 +92,38 @@ module.exports = function(app){
    * com token válido ou não
    */
   controller.validaUsuario = 	function(req, res, next){
-    var token = req.body.token || req.session.token || req.params.token || req.query.token;
+    var token = req.query.token || req.body.token;
 		if (token) {
 			jwt.verify(token, app.get('superSecret'), function(err, decoded) {
 				if (err) {
           return res.status(404).json({"msg": 'Erro ao validar token'});
           
 				} else {
-					req.user = decoded._doc;
-				  next();
+				  return next();
 				}
 			});
 		} else {
 			return res.status(404).json({"msg": 'Erro: nenhum token enviado  '});
 		}
 	}
+
+  /**
+   * Controller que devolve usuário baseado no token
+   */
+  controller.autenticaUsuario = 	function(req, res, next){
+    var token = req.query.token || req.body.token;
+    if (token) {
+      jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+        if (err) {
+          return res.status(404).json({"msg": 'Erro ao validar token'});
+          
+        } else {
+          return res.status(200).json(decoded);
+        }
+      });
+    } else {
+      return res.status(404).json({"msg": 'Erro: nenhum token enviado  '});
+    }
+  } 
   return controller;
 }
