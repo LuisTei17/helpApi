@@ -1,6 +1,6 @@
 module.exports = function(app) {
     var controller = app.controllers.perfil;
-    var loginController = app.constrollers.login;
+    var loginController = app.controllers.login;
 
     // Rota para perfil que recebe id e tipo 
     // como parametros
