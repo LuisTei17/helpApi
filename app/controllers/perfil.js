@@ -1,6 +1,7 @@
 
 module.exports = function(app) {
     var funcoes = app.controllers.funcoesGlobais;
+
     var Demanda = app.models.demandas;
     var User = app.models;
     var Material = app.models.materials;
@@ -9,28 +10,6 @@ module.exports = function(app) {
     var controller = {}
     var id;
 
-
-
-    //Controler que carrega as informações do perfil
-    controller.carregaPerfil = function(req, res){
-        var id = req.params.id;
-        var tipo = req.params.tipo;
-        if(tipo === "usuario") {
-            Usuario = User.users;
-        } else if(tipo === "empresa") {
-            Usuario = User.empresas;
-        } else if(tipo === "instituicao") {
-            Usuario = User.instituicoes;
-        }
-           
-        Usuario.findOne({"_id": id}, function(err, user) {
-            if(user) {
-                res.status(200).json(user);
-            } else {
-                res.status(404).json({"msg": "Error ao procurar perfil"});
-            }
-        });
-    };
 
     // Controller para editar dados do usuário
     controller.mudaDados = function(req, res){
