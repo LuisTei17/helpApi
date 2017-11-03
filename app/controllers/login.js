@@ -115,6 +115,8 @@ module.exports = function(app){
     if (token) {
       jwt.verify(token, app.get('superSecret'), function(err, decoded) {
         if (err) {
+
+          console.log("erro ao validar")
           return res.status(404).json({"msg": 'Erro ao validar token'});
           
         } else {
