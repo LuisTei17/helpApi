@@ -120,11 +120,7 @@ module.exports = function(app){
           return res.status(404).json({"msg": 'Erro ao validar token'});
           
         } else {
-          var usuario = {
-            nome: decoded._doc.username,
-            email: decoded._doc.email,
-            categorias: decoded._doc.categorias
-          }
+          var usuario = decoded._doc;
           usuario = JSON.stringify(usuario)
           console.log(usuario)
           return res.status(200).json(usuario);

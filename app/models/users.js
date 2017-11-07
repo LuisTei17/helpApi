@@ -6,6 +6,9 @@ module.exports = function(){
 		name: {
 			type: String
 		},
+		caminhoImagem: {
+
+		},
 		username: {
 			type: String,
 			index:true
@@ -16,7 +19,8 @@ module.exports = function(){
 		email: {
 			type: String
 		},
-		categorias: []
+		categorias: [],
+		insignias: []
 	});
 	return mongoose.model('Usuario', UsuarioSchema);
 }

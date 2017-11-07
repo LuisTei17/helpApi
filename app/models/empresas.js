@@ -7,7 +7,8 @@ module.exports = function() {
 	var EmpresaSchema = mongoose.Schema({
     nome: {
       type: String
-    },
+		},
+		caminhoImagem: {type: String},
     username: {
 			type: String,
 			index:true
@@ -21,6 +22,7 @@ module.exports = function() {
 		categorias: {
 			type: String
 		},
+		insignias: [],
 		cnpj: {
 			type: String
 		}

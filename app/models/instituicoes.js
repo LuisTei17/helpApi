@@ -5,6 +5,10 @@ module.exports = function() {
 		nome: {
 			type: String
 		},
+		caminhoaImagem: {
+
+		},
+		imagens: [],
 		username: {
 			type: String,
 			index:true
