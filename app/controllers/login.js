@@ -120,7 +120,14 @@ module.exports = function(app){
           return res.status(404).json({"msg": 'Erro ao validar token'});
           
         } else {
-          return res.status(200).json(decoded);
+          var usuario = {
+            nome: decoded._doc.username,
+            email: decoded._doc.email,
+            categorias: decoded._doc.categorias
+          }
+          usuario = JSON.stringify(usuario)
+          console.log(usuario)
+          return res.status(200).json(usuario);
         }
       });
     } else {

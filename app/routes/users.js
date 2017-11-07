@@ -23,7 +23,6 @@ module.exports = function(app){
 
 	app.route(`/v1/in/profile`).post(controller.validaUsuario);
 	app.get('/v1/in/logout', function(req, res){
-		console.log("logging out")
 		req.session.token =  null;
 		res.status(200).json({"msg": "Deslogado"});
 	});
