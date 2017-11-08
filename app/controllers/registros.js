@@ -42,6 +42,7 @@ module.exports = function(app){
           email:email,
           username: username,
           password: hash,
+          tipo: "usuario",
           categorias: categorias
         });
         newUser.save(function(err){
@@ -87,6 +88,7 @@ module.exports = function(app){
           nome: nome,
           email:email,
           username: username,
+          tipo: "empresa",
           password: passwordHash,
           categorias: categorias
         });
@@ -132,6 +134,7 @@ module.exports = function(app){
           cnpj: cnpj,
           nome: nome,
           email:email,
+          tipo: "instituicao",
           username: username,
           password: passwordHash,
           categorias: categorias

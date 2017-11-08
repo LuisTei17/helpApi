@@ -9,6 +9,9 @@ module.exports = function(){
 		caminhoImagem: {
 
 		},
+		tipo: {
+			type: String
+		},
 		username: {
 			type: String,
 			index:true

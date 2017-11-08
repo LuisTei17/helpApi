@@ -8,6 +8,9 @@ module.exports = function() {
     nome: {
       type: String
 		},
+		tipo: {
+			type: String
+		},
 		caminhoImagem: {type: String},
     username: {
 			type: String,

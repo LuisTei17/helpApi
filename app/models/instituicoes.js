@@ -8,6 +8,9 @@ module.exports = function() {
 		caminhoaImagem: {
 
 		},
+		tipo: {
+			type: String
+		},
 		imagens: [],
 		username: {
 			type: String,
