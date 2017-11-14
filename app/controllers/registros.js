@@ -64,7 +64,7 @@ module.exports = function(app){
     var password = req.body.password;
     var password2 = req.body.password2;
     var categorias = req.body.categorias;
-
+    
     nomeExiste = typeof nome != undefined;
     cnpjExiste = typeof cnpj != undefined;
     emailExiste = typeof email != undefined;

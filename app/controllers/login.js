@@ -22,6 +22,9 @@ module.exports = function(app){
     
     // Verifica qual o tipo de User para 
     // buscar no banco
+
+    console.log(req.body)
+
     if(tipo === "empresa") {
       var User = Empresa;
     } else if(tipo === "usuario") {

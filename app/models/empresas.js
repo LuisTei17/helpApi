@@ -11,7 +11,9 @@ module.exports = function() {
 		tipo: {
 			type: String
 		},
-		caminhoImagem: {type: String},
+		caminhoImagem: {
+			type: String
+		},
     username: {
 			type: String,
 			index:true
