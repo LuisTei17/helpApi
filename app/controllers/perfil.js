@@ -59,7 +59,6 @@ module.exports = function(app) {
     controller.listaDemandasPorMateriais = function(req, res){
         Material.find(function(err, materiais) {
             if(err) {
-                console.log(err);
                 res.status(500).json({"msg": "Erro ao listar demandas por materiais"});
             } else {
                 res.status(200).json(materiais);
@@ -99,13 +98,11 @@ module.exports = function(app) {
             Material.findByIdAndUpdate(idMaterial, materialUpdate).exec().then(function(newMaterial) {
                 res.status(200).json({"msg": "Demanda alterada com sucesso", newMaterial})
             }, function(erro) {
-                console.log(erro + "!!!!!!!!!!!!! ERRO");
                 res.status(404).json({"msg": "Erro ao atualizar dados"});
             })
         } else if(tipo === "instituicao"){
             newMaterial.save(function(err){
                 if(err) {
-                    console.log(err);
                     res.status(500).json({"msg":"Erro ao salvar material no banco"});
                 }
                 res.status(200).json({"msg":"Demanda salva"});
@@ -130,7 +127,6 @@ module.exports = function(app) {
     controller.listaDemandasPorTrabalhos = function(req, res){
         Trabalho.find(function(err, trabalhos) {
             if (err) {
-                console.log(err + "!!! Erro ao listar demandas por trabalho");
                 res.status(500).json({"msg":"Erro ao listar as demandas por trabalhos"});
             };
             res.status(200).json(trabalhos);
@@ -163,14 +159,11 @@ module.exports = function(app) {
             Trabalho.findByIdAndUpdate(idTrabalho, trabalho).exec().then(function(newTrabalho) {
                 res.status(200).json({"msg": "Demanda alterada com sucesso", newTrabalho})
             }, function(erro) {
-                console.log(erro + "!!!!!!!!!!!!! ERRO");
                 res.status(404).json({"msg": "Erro ao atualizar dados"});
             })
         } else if(tipo === "instituicao") {
             newTrabalho.save(function(err){
                 if(err){
-                    console.log(err)
-                    console.log("Erro ao salvar demanda por trabalho no banco");
                     res.status(500).json({"msg": "Erro no banco"});
                 }
                 res.status(200).json({"msg": "Demanda salva"});

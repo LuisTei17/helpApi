@@ -9,89 +9,61 @@ module.exports = function(app) {
             if(err) {
                 res.status(500).json({"msg":"Erro ao listar usuarios"})
             } else {
-                res.status(200).json(posts);
+                var user = req.session.user
+                res.status(200).json({posts:posts, user:user});
             }
         })
     };
 
     controller.remove = function(req, res){
-        var id = req.params.id;
-        var idInst = req.params._idInst;
+        var id = req.query.id;
 
-        Post.findOne({"_idInst": _idInst}, function() {
-
-        }, function(erro) {
-            res.status(404).json({"msg": "O post não é seu"});
-        })
         Post.remove({"_id": id}).exec().then(function(){
-            res.status(200).json({"msg":"Usuario apagado"})
+            return res.status(200).json({"msg":"Usuario apagado"})
         }).catch(function(err){
-            res.status(404).json({"msg": "Usuario não encontrado"});
+            return res.status(404).json({"msg": "Usuario não encontrado"});
         })
     };
 
-    /* Codigo que precisa ser revisto
-    controller.editaPostagem = function(req, res){
-        var _id = req.params._id;
-        if(_id) {
-            var titulo = req.body.titulo;
-            var texto = req.body.texto;
-            var autor = req.body._idInst;
-            var data = req.body.data;
-            var categoria = req.body.categoriaInst;
-            if(!(req.body.tipo === "instituicao")) {
-                res.status(500).json({"msg":"Você não é uma instituição"})
-            } else {
-                var newPost = new Post({
-                    titulo: titulo,
-                    texto: texto,
-                    autor: autor,
-                    data: data,
-                    categoria: categoria
-                });
-                newPost.save(function(err, post) {
-                    res.status(200);
-                });
-            };
-        };
-    };
-    */
     controller.posta = function(req, res){
+
+
         var titulo = req.body.titulo;
         var texto = req.body.texto;
-        var autor = req.body._idInst;
+        var autor = req.body.autor;
         var nomeAutor = req.body.nome;
         var data = req.body.data;
-        var categoria = req.body.categoriaInst;
-        var _id = req.body._id;
-        
+        var _id = req.body.id;
         if(_id) {
             Post.findByIdAndUpdate(_id, req.body).exec().then(function(post) {
-                res.status(200).json(post);
+                return res.status(200).json(post);
             }, function(erro) {
-                res.status(500).json({"msg": "Erro ao atualizar"});
+                console.log("AAA")
+                return res.status(500).json({"msg": "Erro ao atualizar"});
             })
         }
-        if(!(req.body.tipo === "instituicao")) {
-            res.status(500).json({"msg":"Você não é uma instituição"})
-        } else {
-            var newPost = new Post({
-                titulo: titulo,
-                texto: texto,
-                autor: autor,
-                nomeAutor: nomeAutor,
-                data: data,
-                categoria: categoria
-            });
-            newPost.save(function(err, post) {
-                if(err) {
-                    res.status(500).json({"msg": "Erro ao postar"})
-                } else {
-                    res.status(200).json(post);
-                }
-            });
-        }       
-    };
+        
+        var data = new Date();
+        var dataConcatenada = data.getDate() + "/" + data.getMonth() + "/" + data.getFullYear();
 
+        var newPost = new Post({
+            titulo: titulo,
+            texto: texto,
+            autor: autor,
+            data: dataConcatenada
+        });
+
+        newPost.save(function(err, post) {
+            if(err) {
+                console.log(err)
+                return res.status(500).json({"msg": "Erro ao postar"})
+            } else {
+                return res.status(200).json(post);
+            }
+        });
+    }       
+    
+    
     return controller;
-} 
+};
+ 

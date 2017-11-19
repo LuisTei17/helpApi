@@ -13,21 +13,19 @@ module.exports = function(app){
   var controller = {};
 
   controller.registroUsuario = function(req, res){
-    var nome = req.body.nome;
     var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
     var password2 = req.body.password2;
     var categorias = req.body.categorias;
 
-    nomeExiste = typeof nome != undefined;
-    emailExiste = typeof email != undefined;
-    usernameExiste = typeof username != undefined;
-    passwordExiste = typeof password != undefined;
-    password2Existe = typeof nome != undefined;
-    categoriasExiste = typeof categorias != undefined;
+    emailExiste = email != undefined;
+    usernameExiste = username != undefined;
+    passwordExiste = password != undefined;
+    password2Existe = password2 != undefined;
+    categoriasExiste = categorias != undefined;
 
-    if(!nomeExiste || !emailExiste || !usernameExiste || !passwordExiste || !password2Existe || !categoriasExiste ) {
+    if(!emailExiste || !usernameExiste || !passwordExiste || !password2Existe || !categoriasExiste ) {
       return res.status(500).json({msg: "Erro, campo(s) vazio"});
     }
     if(password != password2) {
@@ -38,42 +36,47 @@ module.exports = function(app){
       bcrypt.hash(password, salt, function(err, hash) {
         // Store hash in your password DB.
         var newUser = new User({
-          nome: nome,
           email:email,
           username: username,
           password: hash,
           tipo: "usuario",
           categorias: categorias
         });
-        newUser.save(function(err){
-          if(err) {
-            res.status(500).json({"msg": "Erro ao salvar"});
+        User.findOne({username:newUser.username}, function(err, user) {
+          if(!user) {
+            newUser.save(function(err){
+              if(err) {
+                res.status(500).json({"msg": "Erro ao salvar"});
+              } else {
+                res.status(200).json({"msg": "Salvo"});
+              }
+            });
           } else {
-            res.status(200).json({"msg": "Salvo"});
+            return res.status(500).json({"msg":"Usuario já existe"})
           }
-        });
+        })
         
       });
     });  
   };
   controller.registroEmpresa = function(req, res){
     var cnpj = req.body.cnpj
-    var nome = req.body.nome;
     var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
     var password2 = req.body.password2;
     var categorias = req.body.categorias;
     
-    nomeExiste = typeof nome != undefined;
-    cnpjExiste = typeof cnpj != undefined;
-    emailExiste = typeof email != undefined;
-    usernameExiste = typeof username != undefined;
-    passwordExiste = typeof password != undefined;
-    password2Existe = typeof nome != undefined;
-    categoriasExiste = typeof categorias != undefined;
 
-    if(!nomeExiste || !emailExiste || !usernameExiste || !passwordExiste || !password2Existe || !categoriasExiste || !cnpjExiste ) {
+    cnpjExiste = cnpj == undefined;
+    emailExiste = email == undefined;
+    usernameExiste = username == undefined;
+    passwordExiste = password == undefined;
+    password2Existe = password2 == undefined;
+    categoriasExiste = categorias == undefined;
+
+
+    if(emailExiste || usernameExiste || passwordExiste || password2Existe || categoriasExiste || cnpjExiste ) {
       return res.status(500).json({msg: "Erro, campo(s) vazio"});
     }
     if(password != password2) {
@@ -85,42 +88,45 @@ module.exports = function(app){
         var passwordHash = hash;
         var newEmpresa = new Empresa({
           cnpj: cnpj,
-          nome: nome,
           email:email,
           username: username,
           tipo: "empresa",
           password: passwordHash,
           categorias: categorias
         });
-        newEmpresa.save(function(err){
-          if(err) {
-            res.status(500).json({"msg": "Erro ao salvar"});
+        Empresa.findOne({username:newEmpresa.username}, function(err, empre) {
+          if(!empre) {
+            newEmpresa.save(function(err){
+              if(err) {
+                return res.status(500).json({"msg": "Erro ao salvar"});
+              } else {
+                return res.status(200).json({"msg": "Salvo"});
+              }
+            });
           } else {
-            res.status(200).json({"msg": "Salvo"});
+            return res.status(500).json({"msg":"Empresa já existente"})
           }
-        });
+        })
       });
     });
   };
 
   controller.registroInstituicao = function(req, res){
     var cnpj = req.body.cnpj
-    var nome = req.body.nome;
     var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
     var password2 = req.body.password2;
-    var categorias = req.body.categorias;
+    var categoria = req.body.categoria;
 
-    nomeExiste = typeof nome != undefined;
-    cnpjExiste = typeof cnpj != undefined;
-    emailExiste = typeof email != undefined;
-    usernameExiste = typeof username != undefined;
-    passwordExiste = typeof password != undefined;
-    password2Existe = typeof nome != undefined;
-    categoriasExiste = typeof categorias != undefined;
+    cnpjExiste = cnpj != undefined;
+    emailExiste = email != undefined;
+    usernameExiste = username != undefined;
+    passwordExiste = password != undefined;
+    password2Existe = password2 != undefined;
+    categoriasExiste = categoria != undefined;
 
-    if(!nomeExiste || !emailExiste || !usernameExiste || !passwordExiste || !password2Existe || !categoriasExiste || !cnpjExiste ) {
+    if(!emailExiste || !usernameExiste || !passwordExiste || !password2Existe || !categoriasExiste || !cnpjExiste ) {
       return res.status(500).json({msg: "Erro, campo(s) vazio"});
     }
     if(password != password2) {
@@ -132,20 +138,25 @@ module.exports = function(app){
         var passwordHash = hash;
         var newInst = new Instituicao({
           cnpj: cnpj,
-          nome: nome,
           email:email,
           tipo: "instituicao",
           username: username,
           password: passwordHash,
-          categorias: categorias
+          categorias: categoria
         });
-        newInst.save(function(err){
-          if(err) {
-            res.status(500).json({"msg": "Erro ao salvar"});
+        Instituicao.findOne({username:newInst.username}, function(err, inst) {
+          if(!inst) {
+            newInst.save(function(err){
+              if(err) {
+                return res.status(500).json({"msg": "Erro ao salvar"});
+              } else {
+                return res.status(200).json({"msg": "Salvo"});
+              }
+            });
           } else {
-            res.status(200).json({"msg": "Salvo"});
+            return res.status(500).json({"msg": "Instituição já existente"});
           }
-        });
+        })
       });
     })
   }

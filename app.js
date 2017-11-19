@@ -1,5 +1,6 @@
 // Importando todas as libs que vamos precisar para a construção da api
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -13,7 +14,8 @@ var cors = require('cors');
 
 // Conectando ao banco de dados externo
 //mongoose.connect('mongodb://luis:luis@cluster0-shard-00-00-ntvbt.mongodb.net:27017,cluster0-shard-00-01-ntvbt.mongodb.net:27017,cluster0-shard-00-02-ntvbt.mongodb.net:27017/help?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin')
-mongoose.connect('mongodb://luis:luis@ds125113.mlab.com:25113/help');
+//mongoose.connect('mongodb://luis:luis@ds125113.mlab.com:25113/help');
+mongoose.connect('mongodb://localhost:27017/help');
 var db = mongoose.connection;
 
 // Iniciando o aplicativo

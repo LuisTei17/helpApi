@@ -10,9 +10,6 @@ module.exports = function() {
       type: String
     },
     autor: {
-      type: Schema.Types.ObjectId, ref: 'Instituicoe' 
-    },
-    nomeAutor: {
       type: String
     },
     data: {

@@ -23,13 +23,12 @@ module.exports = function(app){
     // Verifica qual o tipo de User para 
     // buscar no banco
 
-    console.log(req.body)
 
-    if(tipo === "empresa") {
+    if(tipo === "Empresa") {
       var User = Empresa;
-    } else if(tipo === "usuario") {
+    } else if(tipo === "Usuario") {
       var User = Usuario;
-    } else if(tipo === "instituicao") {
+    } else if(tipo === "Instituicao") {
       var User = Instituicao;
     }
     var passLogin = req.body.password;
@@ -102,6 +101,7 @@ module.exports = function(app){
           return res.status(404).json({"msg": 'Erro ao validar token'});
           
 				} else {
+          req.session.user = JSON.stringify(decoded._doc);
 				  return next();
 				}
 			});
@@ -124,7 +124,6 @@ module.exports = function(app){
         } else {
           var usuario = decoded._doc;
           usuario = JSON.stringify(usuario)
-          console.log(usuario)
           return res.status(200).json(usuario);
         }
       });
